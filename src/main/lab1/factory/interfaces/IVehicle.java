@@ -5,14 +5,16 @@ import main.lab1.factory.exceptions.NoSuchModelNameException;
 
 public interface IVehicle {
     void setBrand(String brand);
-    String getBrand();
-
     void setModelName(String modelName, String newName) throws NoSuchModelNameException, DuplicateModelNameException;
-    String[] getAllModelsNames();
-    double getModelPrice(String modelName) throws NoSuchModelNameException;
     void setModelPrice(String modelName, double price) throws NoSuchModelNameException;
-    double[] getAllModelsPrices();
     void addModel(String modelName, double price) throws DuplicateModelNameException;
     void deleteModel(String modelName) throws NoSuchModelNameException;
+
+    String getBrand();
+
     int getModelsSize();
+    double getModelPrice(String modelName) throws NoSuchModelNameException;
+
+    String[] getAllModelsNames();
+    double[] getAllModelsPrices();
 }

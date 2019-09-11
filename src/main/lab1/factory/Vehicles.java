@@ -4,6 +4,7 @@ import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.factories.CarFactory;
 import main.lab1.factory.interfaces.ITransportFactory;
 import main.lab1.factory.interfaces.IVehicle;
+import main.lab2.decorator.SynchronizedVehicle;
 
 public class Vehicles {
     private static ITransportFactory factory = new CarFactory();
@@ -31,6 +32,10 @@ public class Vehicles {
     public static void printPriceList(IVehicle vehicle) throws NoSuchModelNameException {
         for (String modelName : vehicle.getAllModelsNames())
             System.out.println("model: " + modelName + " price: " + vehicle.getModelPrice(modelName));
+    }
+
+    public static SynchronizedVehicle getSynchronizedVehicle(IVehicle vehicle) {
+        return new SynchronizedVehicle(vehicle);
     }
 }
 

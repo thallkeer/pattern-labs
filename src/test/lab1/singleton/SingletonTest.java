@@ -1,16 +1,10 @@
 package test.lab1.singleton;
 
 import main.lab1.singleton.AppProperties;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
-
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import static main.lab1.singleton.AppProperties.FillProps;
+import static org.junit.Assert.assertEquals;
 
 public class SingletonTest {
     @Test
