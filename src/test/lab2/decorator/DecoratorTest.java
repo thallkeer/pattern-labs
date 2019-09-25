@@ -3,12 +3,8 @@ package test.lab2.decorator;
 import main.lab1.factory.Vehicles;
 import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
-import main.lab1.factory.factories.CarFactory;
 import main.lab1.factory.interfaces.IVehicle;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class DecoratorTest {
     private IVehicle initializeVehicle() {

@@ -5,12 +5,12 @@ import main.lab2.proxy.Proxy;
 import main.lab2.proxy.Service;
 import org.junit.Test;
 
-import java.io.IOException;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProxyTest {
     @Test
-    public void testProxyCanMultiply() throws IOException {
+    public void testProxyCanMultiply() {
+        //TODO: fix proxy
         Service service = new Service();
         Proxy proxy = new Proxy();
         Client client = new Client(proxy);
