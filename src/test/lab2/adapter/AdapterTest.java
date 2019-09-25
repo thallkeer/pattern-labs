@@ -22,8 +22,9 @@ public class AdapterTest {
             StringArrayToBytesAdapter adapter = new StringArrayToBytesAdapter(outputStream);
             adapter.adapt(strings);
             byte[] buffer;
-            while (inputStream.available() > 0) {
-                buffer = new byte[inputStream.available()];
+            int available;
+            while ((available = inputStream.available()) > 0) {
+                buffer = new byte[available];
                 inputStream.read(buffer);
                 String[] stringsFromFile = new String(buffer).split("\n");
                 Arrays.stream(stringsFromFile).forEach(System.out::println);

@@ -63,7 +63,7 @@ public class Motorcycle implements IVehicle, Cloneable {
         this(brand);
         for (int i = 0; i < modelsSize; i++) {
             try {
-                addModel(Integer.toString(i), 0);
+                addModel(Integer.toString(i), i+1);
             } catch (DuplicateModelNameException e) {
                 e.printStackTrace();
             }
