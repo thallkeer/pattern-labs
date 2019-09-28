@@ -4,6 +4,9 @@ import main.lab1.factory.Vehicles;
 import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
+import main.lab3.chain.ColumnPrinter;
+import main.lab3.chain.IVehiclePrinter;
+import main.lab3.chain.RowPrinter;
 import org.junit.Test;
 
 public class DecoratorTest {
@@ -26,6 +29,13 @@ public class DecoratorTest {
     @Test
     public void createSynchronizedVehicle() throws NoSuchModelNameException, DuplicateModelNameException {
         IVehicle vehicle = initializeVehicle();
+
+        //TODO: move code to cor own test method
+        IVehiclePrinter vehicleRowPrinter = new RowPrinter();
+        IVehiclePrinter vehicleColumnPrinter = new ColumnPrinter();
+        vehicleRowPrinter.setNext(vehicleColumnPrinter);
+        vehicleColumnPrinter.setNext(vehicleRowPrinter);
+        vehicleRowPrinter.printVehicleToFile(vehicle);
 
         IVehicle synchronizedVehicle = Vehicles.getSynchronizedVehicle(vehicle);
         synchronizedVehicle.setBrand("COOL BRAND YEAH");
