@@ -1,13 +1,12 @@
-package main.lab3.iterator;
+package test.lab3.iterator;
 
 import main.lab1.factory.Car;
 import org.junit.Test;
-import test.lab2.decorator.DecoratorTest;
 import test.shared.Utils;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Iterator;
+
+import static org.junit.Assert.assertEquals;
 
 public class IteratorTest {
 

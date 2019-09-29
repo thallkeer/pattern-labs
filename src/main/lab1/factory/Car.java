@@ -6,57 +6,16 @@ import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
 import main.lab3.command.IPrintCommand;
 
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class Car implements IVehicle, Cloneable {
-    public static class Model implements Cloneable {
-        private String name;
-        private double price;
-
-        public Model(String name, double price) {
-            this.name = name;
-            this.price = price;
-        }
-
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            Model model = (Model) super.clone();
-            model.name = this.name;
-            model.price = this.price;
-            return model;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            if (price <= 0)
-                throw new ModelPriceOutOfBoundsException("Model price must be greater than zero!");
-            else
-                this.price = price;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name + " " + price;
-        }
-    }
-
+public class Car implements IVehicle, Cloneable, Serializable {
     private String brand;
     private Model[] models;
     private IPrintCommand printCommand;
+    private static CarMemento memento;
 
     public Car(String brand) {
         this(brand, 0);
@@ -188,9 +147,9 @@ public class Car implements IVehicle, Cloneable {
         return -1;
     }
 
-    public Model getByIndex(int index){
+    public Model getByIndex(int index) {
         if (index < 0 || index >= getModelsSize())
-            throw new  IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException();
         return models[index];
     }
 
@@ -201,7 +160,49 @@ public class Car implements IVehicle, Cloneable {
             this.printCommand.print(this, fileWriter);
     }
 
-    public Iterator createCarIterator(){
+    public static class Model implements Cloneable, Serializable {
+        private String name;
+        private double price;
+
+        public Model(String name, double price) {
+            this.name = name;
+            this.price = price;
+        }
+
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            Model model = (Model) super.clone();
+            model.name = this.name;
+            model.price = this.price;
+            return model;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            if (price <= 0)
+                throw new ModelPriceOutOfBoundsException("Model price must be greater than zero!");
+            else
+                this.price = price;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name + " " + price;
+        }
+    }
+
+    public Iterator createCarIterator() {
         return new CarIterator();
     }
 
@@ -216,6 +217,43 @@ public class Car implements IVehicle, Cloneable {
         @Override
         public Car.Model next() {
             return this.hasNext() ? models[index++] : null;
+        }
+    }
+
+    public void createMemento() {
+        CarMemento.setAuto(this);
+    }
+
+    public Car setMemento() {
+        return CarMemento.getAuto();
+    }
+
+
+    public static class CarMemento {
+        private static byte[] inMemoryCar;
+
+        public static void setAuto(Car car) {
+            try (
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)
+            ) {
+                objectOutputStream.writeObject(car);
+                inMemoryCar = outputStream.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static Car getAuto() {
+            try (
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(inMemoryCar);
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)
+                )  {
+                return (Car) objectInputStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
