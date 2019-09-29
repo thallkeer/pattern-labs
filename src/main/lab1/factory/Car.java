@@ -4,12 +4,15 @@ import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.ModelPriceOutOfBoundsException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
+import main.lab3.command.IPrintCommand;
 
+import java.io.FileWriter;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class Car implements IVehicle, Cloneable {
-    private class Model implements Cloneable {
+    public static class Model implements Cloneable {
         private String name;
         private double price;
 
@@ -44,10 +47,16 @@ public class Car implements IVehicle, Cloneable {
         public void setName(String name) {
             this.name = name;
         }
+
+        @Override
+        public String toString() {
+            return name + " " + price;
+        }
     }
 
     private String brand;
     private Model[] models;
+    private IPrintCommand printCommand;
 
     public Car(String brand) {
         this(brand, 0);
@@ -61,7 +70,7 @@ public class Car implements IVehicle, Cloneable {
         }
     }
 
-        @Override
+    @Override
     public Object clone() throws CloneNotSupportedException {
         Car car = (Car) super.clone();
         car.models = this.models.clone();
@@ -125,6 +134,10 @@ public class Car implements IVehicle, Cloneable {
         return prices;
     }
 
+    public void setPrintCommand(IPrintCommand printCommand) {
+        this.printCommand = printCommand;
+    }
+
     @Override
     public void addModel(String modelName, double price) throws DuplicateModelNameException {
         if (getModelsSize() != 0 && indexOfModel(modelName) != -1)
@@ -174,4 +187,36 @@ public class Car implements IVehicle, Cloneable {
         }
         return -1;
     }
+
+    public Model getByIndex(int index){
+        if (index < 0 || index >= getModelsSize())
+            throw new  IndexOutOfBoundsException();
+        return models[index];
+    }
+
+    public void print(FileWriter fileWriter) {
+        if (fileWriter == null)
+            throw new IllegalArgumentException("file writer");
+        if (this.printCommand != null)
+            this.printCommand.print(this, fileWriter);
+    }
+
+    public Iterator createCarIterator(){
+        return new CarIterator();
+    }
+
+    class CarIterator implements Iterator<Car.Model> {
+        private int index = 0;
+
+        @Override
+        public boolean hasNext() {
+            return index < getModelsSize();
+        }
+
+        @Override
+        public Car.Model next() {
+            return this.hasNext() ? models[index++] : null;
+        }
+    }
 }
+

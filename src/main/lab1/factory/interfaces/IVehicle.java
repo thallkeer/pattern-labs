@@ -3,6 +3,8 @@ package main.lab1.factory.interfaces;
 import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 
+import java.io.OutputStream;
+
 public interface IVehicle {
     void setBrand(String brand);
     void setModelName(String modelName, String newName) throws NoSuchModelNameException, DuplicateModelNameException;

@@ -8,34 +8,15 @@ import main.lab3.chain.ColumnPrinter;
 import main.lab3.chain.IVehiclePrinter;
 import main.lab3.chain.RowPrinter;
 import org.junit.Test;
+import test.shared.Utils;
+
+import static test.shared.Utils.getRandomDouble;
 
 public class DecoratorTest {
-    private IVehicle initializeVehicle() {
-        IVehicle vehicle = Vehicles.createInstance("Some vehicle", 5);
-        try {
-            for (int i = 0; i < 22; i++) {
-                vehicle.addModel("Model №" + i, getRandomDouble());
-            }
-        } catch (DuplicateModelNameException ex) {
-            ex.printStackTrace();
-        }
-        return vehicle;
-    }
-
-    private double getRandomDouble() {
-        return (Math.random() * 10 + 1) * 100000;
-    }
 
     @Test
     public void createSynchronizedVehicle() throws NoSuchModelNameException, DuplicateModelNameException {
-        IVehicle vehicle = initializeVehicle();
-
-        //TODO: move code to cor own test method
-        IVehiclePrinter vehicleRowPrinter = new RowPrinter();
-        IVehiclePrinter vehicleColumnPrinter = new ColumnPrinter();
-        vehicleRowPrinter.setNext(vehicleColumnPrinter);
-        vehicleColumnPrinter.setNext(vehicleRowPrinter);
-        vehicleRowPrinter.printVehicleToFile(vehicle);
+        IVehicle vehicle = Utils.initializeVehicle(22);
 
         IVehicle synchronizedVehicle = Vehicles.getSynchronizedVehicle(vehicle);
         synchronizedVehicle.setBrand("COOL BRAND YEAH");
