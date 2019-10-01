@@ -21,31 +21,28 @@ public class Gui implements IObservable {
             panel.setLayout(null);
             form.getContentPane().add(panel);
 
-            EyeEllipse leftEye = new EyeEllipse(100,100,75,75);
-            EyeEllipse rightEye = new EyeEllipse(400,100,75,75);
-            leftEye.setControlRole(ControlRole.LEFT_EYE);
-            rightEye.setControlRole(ControlRole.RIGHT_EYE);
-            leftEye.subscribe(this);
-            leftEye.subscribe(this);
+            EyeEllipse leftEye = new EyeEllipse(100,100,75,75,ControlRole.LEFT_EYE);
+            EyeEllipse rightEye = new EyeEllipse(400,100,75,75,ControlRole.RIGHT_EYE);
 
-            leftEye.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    Gui.this.notify(ControlRole.LEFT_EYE);
-                }
-            });
+            leftEye.subscribe(this);
+            rightEye.subscribe(this);
 
-            rightEye.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    Gui.this.notify(ControlRole.RIGHT_EYE);
-                }
-            });
+            leftEye.addClickListener(this);
+            rightEye.addClickListener(this);
 
             panel.add(leftEye);
             panel.add(rightEye);
+
+            NoseTriangle nose = new NoseTriangle(255,250,50,50);
+            nose.subscribe(this);
+            nose.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    Gui.this.notify(nose.getControlRole());
+                }
+            });
+            panel.add(nose);
 
             form.pack();
             form.setSize(600, 600);//400 width and 500 height
@@ -71,6 +68,7 @@ public class Gui implements IObservable {
     @Override
     public void notify(ControlRole role) {
         this.listeners.forEach(observer -> observer.update(role));
+
     }
 }
 
