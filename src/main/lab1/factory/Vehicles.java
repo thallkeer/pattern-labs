@@ -6,6 +6,8 @@ import main.lab1.factory.interfaces.ITransportFactory;
 import main.lab1.factory.interfaces.IVehicle;
 import main.lab2.decorator.SynchronizedVehicle;
 
+import java.util.HashMap;
+
 public class Vehicles {
     private static ITransportFactory factory = new CarFactory();
 
@@ -20,13 +22,21 @@ public class Vehicles {
     public static double getAveragePrice(IVehicle vehicle) {
         if (vehicle.getModelsSize() == 0)
             return 0;
-
         double sum = 0;
         for (double price :
                 vehicle.getAllModelsPrices()) {
             sum += price;
         }
         return sum / vehicle.getModelsSize();
+    }
+
+    public static HashMap<IVehicle,Double> getVehiclesAveragePrices(IVehicle[] vehicles) {
+        HashMap<IVehicle, Double> averagePriceByVehicle = new HashMap<>();
+        for (IVehicle vehicle :
+                vehicles) {
+            averagePriceByVehicle.put(vehicle, Vehicles.getAveragePrice(vehicle));
+        }
+        return averagePriceByVehicle;
     }
 
     public static void printPriceList(IVehicle vehicle) throws NoSuchModelNameException {

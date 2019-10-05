@@ -9,7 +9,6 @@ import main.lab3.command.IPrintCommand;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 
 public class Car implements IVehicle, Cloneable, Serializable {
     private String brand;
@@ -27,6 +26,11 @@ public class Car implements IVehicle, Cloneable, Serializable {
         for (int i = 0; i < modelsSize; i++) {
             models[i] = new Model(Integer.toString(i), 0);
         }
+    }
+
+    @Override
+    public String toString() {
+        return brand + "\t" + Vehicles.getAveragePrice(this);
     }
 
     @Override
