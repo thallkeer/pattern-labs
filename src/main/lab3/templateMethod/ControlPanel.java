@@ -1,8 +1,10 @@
 package main.lab3.templateMethod;
 
+import javafx.application.Application;
+import javafx.scene.control.ComboBox;
+
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 import java.util.Vector;
 
 public class ControlPanel extends JPanel {
@@ -14,16 +16,29 @@ public class ControlPanel extends JPanel {
         cbChooseShape= new JComboBox();
 
         Vector<BouncingShape> items = new Vector<>();
-        items.add(new Ball());
-        items.add(new Square());
-        items.add(new Star());
+        items.add(new Ball(null));
+        items.add(new Square(null));
+        items.add(new Star(null));
 
-        cbChooseShape.setModel(new DefaultComboBoxModel<BouncingShape>(items));
+        cbChooseShape.setModel(new DefaultComboBoxModel<>(items));
         cbChooseShape.setSelectedIndex(0);
 
         this.add(btnStart);
         this.add(btnClose);
         this.add(cbChooseShape);
+
+        btnClose.addActionListener(actionEvent -> {
+           System.exit(0);
+        });
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(600,35);
+    }
+
+    public JComboBox getChooseShapeCb(){
+        return cbChooseShape;
     }
 
     public BouncingShape getSelectedShape(){

@@ -2,6 +2,7 @@ package main.lab3.templateMethod;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.Vector;
 
 public class MainPanel extends JPanel {
@@ -15,19 +16,27 @@ public class MainPanel extends JPanel {
         controlPanel.setBackground(Color.GRAY);
 
         controlPanel.btnStart.addActionListener(actionEvent -> {
-            Class cls = controlPanel.getSelectedShape().getClass();
+            //Class cls = controlPanel.getSelectedShape().getClass();
             BouncingShape shape = null;
-            try {
-                shape = (BouncingShape) cls.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+            //try {
+            shape = controlPanel.getSelectedShape().createShape(canvas);//(BouncingShape) cls.newInstance();
+            //shape.start();
+           /* } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
-            }
+            }*/
             shapeList.add(shape);
+
         });
+
+//        controlPanel.getChooseShapeCb().addItemListener(itemEvent -> {
+//            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+//                shapeList.clear();
+//            }
+//        });
+
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
         this.add(controlPanel, BorderLayout.PAGE_END);
-
         start();
     }
 
@@ -44,6 +53,11 @@ public class MainPanel extends JPanel {
             }
         });
         t.start();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(width,height);
     }
 
     private void update() {
@@ -72,10 +86,14 @@ public class MainPanel extends JPanel {
             gui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
             gui.setSize(600, 600);
-            gui.setContentPane(new MainPanel());
+            MainPanel panel = new MainPanel();
+            gui.setContentPane(panel);
             gui.setLocationRelativeTo(null);
             //gui.pack();
             gui.setVisible(true);
+
+            System.out.println(panel.getBounds());
+            System.out.println(panel.canvas.getBounds());
         });
     }
 }

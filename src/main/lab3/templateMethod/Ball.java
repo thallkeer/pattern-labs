@@ -3,12 +3,15 @@ package main.lab3.templateMethod;
 import java.awt.*;
 
 public class Ball extends BouncingShape {
-    private int radius = 50;
 
-    public Ball()
+    public Ball(MainPanel.DrawCanvas owner)
     {
-        super();
-        y = y - radius;
+        super(owner);
+    }
+
+    @Override
+    BouncingShape createShape(MainPanel.DrawCanvas owner) {
+        return new Ball(owner);
     }
 
     @Override
@@ -19,11 +22,12 @@ public class Ball extends BouncingShape {
     @Override
     void draw(Graphics g) {
         g.setColor(color);
-        g.fillOval(x,y,radius,radius);
+        g.fillOval(x, y, radius / 2, radius / 2);
     }
 
     @Override
     void move() {
+        //TODO: fix copypaste
         if (x + angleX < 0)
             angleX = v;
         else if (x + angleX > boundX - radius)
