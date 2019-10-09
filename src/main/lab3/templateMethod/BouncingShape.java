@@ -2,30 +2,28 @@ package main.lab3.templateMethod;
 
 import java.awt.*;
 
-abstract class BouncingShape extends Thread {
-    int angleX = 1;
-    int angleY = 1;
-    int v;
-    int x;
-    int y;
-    int boundX;
-    int boundY;
-    protected int radius = 100;
-    Color color;
+abstract class BouncingShape {
+    int vX = 1;
+    int vY = 1;
+    int angle = 1;
+    int x, y, boundX, boundY;
+    protected int radius = 25;
+    double rotationDelta = 5d;
+    private Color color;
     MainPanel.DrawCanvas owner;
 
-    protected BouncingShape(MainPanel.DrawCanvas owner)
-    {
-        if (owner != null) {
-            this.owner = owner;
-            Rectangle rect = owner.getBounds();
-            x = rect.width-radius/2;
-            y = rect.height-radius/2;
-            boundX = rect.width;
-            boundY = rect.height;
-            v = random(5, 10);
-            color = new Color(random(255), random(255), random(255));
-        }
+    public BouncingShape(){}
+
+    protected BouncingShape(MainPanel.DrawCanvas owner) {
+        if (owner == null)
+            throw new NullPointerException();
+
+        this.owner = owner;
+        Rectangle rect = owner.getBounds();
+        x = boundX = rect.width;
+        y = boundY = rect.height;
+        vX = vY = random(5, 10);
+        color = new Color(random(255), random(255), random(255));
     }
 
     private static int random(int maxRange) {
@@ -35,21 +33,48 @@ abstract class BouncingShape extends Thread {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    //TODO: delete unused code
-    @Override
-    public void run() {
-        while (true) {
-            move();
-            draw(owner.getGraphics());
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    abstract BouncingShape createShape(MainPanel.DrawCanvas owner);
+    abstract void paintShape(Graphics2D g);
+    abstract void rotate(boolean bounced);
+
+    void draw(Graphics g) {
+        g.setColor(color);
+        paintShape((Graphics2D) g.create());
     }
 
-    abstract BouncingShape createShape(MainPanel.DrawCanvas owner);
-    abstract void draw(Graphics g);
-    abstract void move();
+    boolean checkBounce() {
+        boolean bounced = false;
+
+        if (x - radius < 0) {
+            vX = -vX;
+            x = radius;
+            bounced = true;
+        } else if (x + radius > boundX) {
+            vX = -vX;
+            x = boundX - radius;
+            bounced = true;
+        }
+
+        if (y - radius < 0) {
+            vY = -vY;
+            y = radius;
+            bounced = true;
+        } else if (y + radius > boundY) {
+            vY = -vY;
+            y = boundY - radius;
+            bounced = true;
+        }
+
+        return bounced;
+    }
+
+    void move() {
+        shiftByDelta();
+        rotate(checkBounce());
+    }
+
+    private void shiftByDelta(){
+        x += vX;
+        y += vY;
+    }
 }

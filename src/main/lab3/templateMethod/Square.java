@@ -1,13 +1,14 @@
 package main.lab3.templateMethod;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Path2D;
 
 public class Square extends BouncingShape {
 
-    public Square(MainPanel.DrawCanvas owner){
-        super(owner);
+    public Square() {
     }
+
+    public Square(MainPanel.DrawCanvas owner) { super(owner); }
 
     @Override
     BouncingShape createShape(MainPanel.DrawCanvas owner) {
@@ -20,24 +21,24 @@ public class Square extends BouncingShape {
     }
 
     @Override
-    void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(x,y,radius/2,radius/2);
+    void paintShape(Graphics2D g) {
+        Rectangle rect = new Rectangle(x, y, radius * 2, radius * 2);
+
+        Path2D.Double path = new Path2D.Double();
+        path.append(rect, false);
+
+        g.translate(x, y);
+        g.rotate(-angle);
+        g.translate(-rect.getCenterX(), -rect.getCenterY());
+        g.fill(rect);
     }
 
     @Override
-    void move() {
-        //TODO: fix copypaste
-        if (x + angleX < 0)
-            angleX = v;
-        else if (x + angleX > boundX - radius)
-            angleX = -v;
-        else if (y + angleY < 0)
-            angleY = v;
-        else if (y + angleY > boundY - radius)
-            angleY = -v;
-
-        x += angleX;
-        y += angleY;
+    void rotate(boolean bounced) {
+        if (bounced) {
+            angle += rotationDelta;
+            if (angle > 360)
+                angle = 0;
+        }
     }
 }

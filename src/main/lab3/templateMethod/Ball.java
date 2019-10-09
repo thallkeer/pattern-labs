@@ -4,8 +4,9 @@ import java.awt.*;
 
 public class Ball extends BouncingShape {
 
-    public Ball(MainPanel.DrawCanvas owner)
-    {
+    public Ball() { }
+
+    public Ball(MainPanel.DrawCanvas owner) {
         super(owner);
     }
 
@@ -20,25 +21,12 @@ public class Ball extends BouncingShape {
     }
 
     @Override
-    void draw(Graphics g) {
-        g.setColor(color);
-        g.fillOval(x, y, radius / 2, radius / 2);
+    void paintShape(Graphics2D g) {
+        g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
     @Override
-    void move() {
-        //TODO: fix copypaste
-        if (x + angleX < 0)
-            angleX = v;
-        else if (x + angleX > boundX - radius)
-            angleX = -v;
-        else if (y + angleY < 0)
-            angleY = v;
-        else if (y + angleY > boundY - radius)
-            angleY = -v;
+    void rotate(boolean bounced) {
 
-        x += angleX;
-        y += angleY;
     }
-
 }

@@ -16,23 +16,15 @@ public class MainPanel extends JPanel {
         controlPanel.setBackground(Color.GRAY);
 
         controlPanel.btnStart.addActionListener(actionEvent -> {
-            //Class cls = controlPanel.getSelectedShape().getClass();
-            BouncingShape shape = null;
-            //try {
-            shape = controlPanel.getSelectedShape().createShape(canvas);//(BouncingShape) cls.newInstance();
-            //shape.start();
-           /* } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }*/
+            BouncingShape shape = controlPanel.getSelectedShape().createShape(canvas);
             shapeList.add(shape);
-
         });
 
-//        controlPanel.getChooseShapeCb().addItemListener(itemEvent -> {
-//            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-//                shapeList.clear();
-//            }
-//        });
+        controlPanel.getChooseShapeCb().addItemListener(itemEvent -> {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                shapeList.clear();
+            }
+        });
 
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
@@ -57,7 +49,7 @@ public class MainPanel extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(width,height);
+        return new Dimension(width, height);
     }
 
     private void update() {
@@ -91,9 +83,6 @@ public class MainPanel extends JPanel {
             gui.setLocationRelativeTo(null);
             //gui.pack();
             gui.setVisible(true);
-
-            System.out.println(panel.getBounds());
-            System.out.println(panel.canvas.getBounds());
         });
     }
 }

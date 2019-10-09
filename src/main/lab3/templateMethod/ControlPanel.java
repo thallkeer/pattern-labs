@@ -16,9 +16,9 @@ public class ControlPanel extends JPanel {
         cbChooseShape= new JComboBox();
 
         Vector<BouncingShape> items = new Vector<>();
-        items.add(new Ball(null));
-        items.add(new Square(null));
-        items.add(new Star(null));
+        items.add(new Ball());
+        items.add(new Square());
+        items.add(new Star());
 
         cbChooseShape.setModel(new DefaultComboBoxModel<>(items));
         cbChooseShape.setSelectedIndex(0);

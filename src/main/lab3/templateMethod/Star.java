@@ -1,28 +1,44 @@
 package main.lab3.templateMethod;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 
 public class Star extends BouncingShape {
-    int radius = 50;
-    double spikiness = 0.5;
-    int xPoint[];
-    int yPoint[];
-    int spikes = 5;
+    Path2D path;
+
+    Star() {}
 
     Star(MainPanel.DrawCanvas owner) {
         super(owner);
+//        for (int i = 0; i < xPoint.length; i++) {
+//            double iRadius = (i % 2 == 0) ? radius : (radius * spikiness);
+//            double angle = (i * 360.0) / (2 * spikes);
+//
+//            xPoint[i] = (int) (x + iRadius * Math.cos(Math.toRadians(angle - 90)));
+//            yPoint[i] = (int) (y + iRadius * Math.sin(Math.toRadians(angle - 90)));
+//        }
 
-        int nPoints = spikes * 2 + 1;
+        path = new Path2D.Double();
 
-        xPoint = new int[nPoints];
-        yPoint = new int[nPoints];
-        for (int i = 0; i < xPoint.length; i++) {
-            double iRadius = (i % 2 == 0) ? radius : (radius * spikiness);
-            double angle = (i * 360.0) / (2 * spikes);
+        int height, width;
+        height = width = radius * 2;
+        double heightPart = height / 3d;
+        double widthPart = width / 3d;
 
-            xPoint[i] = (int) (x + iRadius * Math.cos(Math.toRadians(angle - 90)));
-            yPoint[i] = (int) (y + iRadius * Math.sin(Math.toRadians(angle - 90)));
-        }
+        path.moveTo(width / 2, 0);
+        path.lineTo(widthPart * 2, heightPart);
+        path.lineTo(width, heightPart);
+        path.lineTo(widthPart * 2, height / 2);
+        path.lineTo(width, height);
+
+        path.lineTo(width / 2, heightPart * 2);
+        path.lineTo(0, height);
+        path.lineTo(widthPart, height / 2);
+        path.lineTo(0, heightPart);
+        path.lineTo(widthPart, heightPart);
+
+        path.closePath();
     }
 
     @Override
@@ -35,48 +51,52 @@ public class Star extends BouncingShape {
         return "Star";
     }
 
-    @Override
-    void draw(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(4.f));
-        g2.setColor(color);
-//        for (int i = 0; i < xPoint.length; i++) {
-//            double iRadius = (i % 2 == 0) ? radius : (radius * spikiness);
-//            double angle = (i * 360.0) / (2 * spikes);
-//
-//            xPoint[i] = (int) (x + iRadius * Math.cos(Math.toRadians(angle - 90)));
-//            yPoint[i] = (int) (y + iRadius * Math.sin(Math.toRadians(angle - 90)));
-//        }
-
-        g2.fillPolygon(xPoint, yPoint, xPoint.length);
+    public Shape getTransformedInstance() {
+        AffineTransform at = new AffineTransform();
+        Rectangle bounds = path.getBounds();
+        at.rotate(Math.toRadians(angle), x + (bounds.width / 2), y + (bounds.height / 2));
+        at.translate(x, y);
+        return path.createTransformedShape(at);
     }
 
     @Override
-    void move() {
-        boolean bounced = true;
-//TODO: fix copypaste and delete unused code
-        for (int i = 0; i < xPoint.length; i++) {
+    void rotate(boolean bounced) {
+        angle += rotationDelta;
+    }
+
+    @Override
+    boolean checkBounce() {
+        Rectangle bounds = path.getBounds();
+
+        boolean bounced = false;
+        if (x < 0) {
+            x = 0;
+            vX *= -1;
             bounced = true;
-            if (x + angleX - radius < 0)
-                angleX = v;
-            else if (x + angleX > boundX - radius)
-                angleX = -v;
-            else if (y + angleY - radius < 0)
-                angleY = v;
-            else if (y + angleY > boundY - radius)
-                angleY = -v;
-            else
-                bounced = false;
-
-            if (bounced)
-                break;
+        } else if (x + bounds.width > boundX) {
+            x = boundX - bounds.width;
+            vX *= -1;
+            bounced = true;
         }
-        x += angleX;
-        y += angleY;
-
-        for (int i = 0; i < xPoint.length; i++) {
-            xPoint[i] += angleX;
-            yPoint[i] += angleY;
+        if (y < 0) {
+            y = 0;
+            vY *= -1;
+            bounced = true;
+        } else if (y + bounds.height > boundY) {
+            y = boundY - bounds.height;
+            vY *= -1;
+            bounced = true;
         }
+        if (bounced) {
+            rotationDelta *= -1;
+        }
+
+        return bounced;
+    }
+
+    @Override
+    void paintShape(Graphics2D g) {
+        g.setStroke(new BasicStroke(4.f));
+        g.fill(getTransformedInstance());
     }
 }
