@@ -10,18 +10,12 @@ abstract class BouncingShape {
     protected int radius = 25;
     double rotationDelta = 5d;
     private Color color;
-    MainPanel.DrawCanvas owner;
 
     public BouncingShape(){}
 
-    protected BouncingShape(MainPanel.DrawCanvas owner) {
-        if (owner == null)
-            throw new NullPointerException();
-
-        this.owner = owner;
-        Rectangle rect = owner.getBounds();
-        x = boundX = rect.width;
-        y = boundY = rect.height;
+    protected BouncingShape(Rectangle boundsRect) {
+        x = boundX = boundsRect.width;
+        y = boundY = boundsRect.height;
         vX = vY = random(5, 10);
         color = new Color(random(255), random(255), random(255));
     }
@@ -33,7 +27,7 @@ abstract class BouncingShape {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    abstract BouncingShape createShape(MainPanel.DrawCanvas owner);
+    abstract BouncingShape createShape(Rectangle rectangle);
     abstract void paintShape(Graphics2D g);
     abstract void rotate(boolean bounced);
 

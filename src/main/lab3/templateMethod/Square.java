@@ -8,11 +8,11 @@ public class Square extends BouncingShape {
     public Square() {
     }
 
-    public Square(MainPanel.DrawCanvas owner) { super(owner); }
+    public Square(Rectangle rectangle) { super(rectangle); }
 
     @Override
-    BouncingShape createShape(MainPanel.DrawCanvas owner) {
-        return new Square(owner);
+    BouncingShape createShape(Rectangle rectangle) {
+        return new Square(rectangle);
     }
 
     @Override

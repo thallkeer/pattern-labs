@@ -4,8 +4,7 @@ import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.ModelPriceOutOfBoundsException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
-
-import java.util.Objects;
+import main.lab3.visitor.IPrintVisitor;
 
 public class Motorcycle implements IVehicle, Cloneable {
     private class Model {
@@ -147,7 +146,7 @@ public class Motorcycle implements IVehicle, Cloneable {
 
     private Model getModelByName(String modelName){
         Model result = null;
-        if (!Utils.stringIsNullOrEmpty(modelName) && !isEmpty()) {
+        if (!StringUtils.stringIsNullOrEmpty(modelName) && !isEmpty()) {
             if (this.head.name.equals(modelName)) {
                 result = this.head;
             } else {
@@ -202,6 +201,12 @@ public class Motorcycle implements IVehicle, Cloneable {
             modelToDelete.next.prev = modelToDelete.prev;
         }
         size--;
+    }
+
+    @Override
+    public void accept(IPrintVisitor visitor) {
+        if (visitor != null)
+            visitor.visit(this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package main.lab2.decorator;
 import main.lab1.factory.exceptions.DuplicateModelNameException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
+import main.lab3.visitor.IPrintVisitor;
 
 public class SynchronizedVehicle implements IVehicle {
     private final IVehicle vehicle;
@@ -35,6 +36,11 @@ public class SynchronizedVehicle implements IVehicle {
     @Override
     public synchronized void deleteModel(String modelName) throws NoSuchModelNameException {
         vehicle.deleteModel(modelName);
+    }
+
+    @Override
+    public void accept(IPrintVisitor visitor) {
+        vehicle.accept(visitor);
     }
 
     @Override

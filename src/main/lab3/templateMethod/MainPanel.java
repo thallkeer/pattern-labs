@@ -10,13 +10,13 @@ public class MainPanel extends JPanel {
     private DrawCanvas canvas = new DrawCanvas();
     private int width = 600;
     private int height = 600;
-    private Vector<BouncingShape> shapeList = new Vector<>(10);
+    private Vector<BouncingShape> shapeList = new Vector<>();
 
     public MainPanel() {
         controlPanel.setBackground(Color.GRAY);
 
         controlPanel.btnStart.addActionListener(actionEvent -> {
-            BouncingShape shape = controlPanel.getSelectedShape().createShape(canvas);
+            BouncingShape shape = controlPanel.getSelectedShape().createShape(canvas.getBounds());
             shapeList.add(shape);
         });
 

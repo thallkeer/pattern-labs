@@ -9,16 +9,8 @@ public class Star extends BouncingShape {
 
     Star() {}
 
-    Star(MainPanel.DrawCanvas owner) {
-        super(owner);
-//        for (int i = 0; i < xPoint.length; i++) {
-//            double iRadius = (i % 2 == 0) ? radius : (radius * spikiness);
-//            double angle = (i * 360.0) / (2 * spikes);
-//
-//            xPoint[i] = (int) (x + iRadius * Math.cos(Math.toRadians(angle - 90)));
-//            yPoint[i] = (int) (y + iRadius * Math.sin(Math.toRadians(angle - 90)));
-//        }
-
+    Star(Rectangle rectangle) {
+        super(rectangle);
         path = new Path2D.Double();
 
         int height, width;
@@ -42,8 +34,8 @@ public class Star extends BouncingShape {
     }
 
     @Override
-    BouncingShape createShape(MainPanel.DrawCanvas owner) {
-        return new Star(owner);
+    BouncingShape createShape(Rectangle rectangle) {
+        return new Star(rectangle);
     }
 
     @Override

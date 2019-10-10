@@ -6,13 +6,13 @@ public class Ball extends BouncingShape {
 
     public Ball() { }
 
-    public Ball(MainPanel.DrawCanvas owner) {
-        super(owner);
+    public Ball(Rectangle rectangle) {
+        super(rectangle);
     }
 
     @Override
-    BouncingShape createShape(MainPanel.DrawCanvas owner) {
-        return new Ball(owner);
+    BouncingShape createShape(Rectangle rectangle) {
+        return new Ball(rectangle);
     }
 
     @Override

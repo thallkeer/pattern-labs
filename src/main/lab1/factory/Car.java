@@ -5,6 +5,7 @@ import main.lab1.factory.exceptions.ModelPriceOutOfBoundsException;
 import main.lab1.factory.exceptions.NoSuchModelNameException;
 import main.lab1.factory.interfaces.IVehicle;
 import main.lab3.command.IPrintCommand;
+import main.lab3.visitor.IPrintVisitor;
 
 import java.io.*;
 import java.util.Arrays;
@@ -130,6 +131,12 @@ public class Car implements IVehicle, Cloneable, Serializable {
     }
 
     @Override
+    public void accept(IPrintVisitor visitor) {
+        if (visitor != null)
+            visitor.visit(this);
+    }
+
+    @Override
     public int getModelsSize() {
         return models.length;
     }
@@ -142,7 +149,7 @@ public class Car implements IVehicle, Cloneable, Serializable {
     }
 
     private int indexOfModel(String modelName) {
-        if (!Utils.stringIsNullOrEmpty(modelName)) {
+        if (!StringUtils.stringIsNullOrEmpty(modelName)) {
             for (int i = 0; i < getModelsSize(); i++) {
                 if (this.models[i].getName().equals(modelName))
                     return i;
