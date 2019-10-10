@@ -14,7 +14,6 @@ public class PrintVisitor implements IPrintVisitor {
     @Override
     public void visit(Car car) {
         IPrintCommand columnPrintCommand = new RowPrintCommand();
-
         car.setPrintCommand(columnPrintCommand);
 
         try (FileWriter fw = new FileWriter("CarVisit.txt")) {
