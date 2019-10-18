@@ -1,4 +1,5 @@
-package test.lab3.iterator;
+package lab3.iterator;
+
 
 import main.lab1.factory.Car;
 import org.junit.Test;

@@ -1,11 +1,6 @@
 package main.lab4.mvc;
 
-import org.jfree.data.xy.XYBarDataset;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class Controller implements ActionListener {
+public class Controller {
     private Model model;
     private View view;
 
@@ -17,24 +12,26 @@ public class Controller implements ActionListener {
 
     private void initController() {
         view.getTextPanel().addBtn.addActionListener(e -> onValueAdd());
-        XYBarDataset ds = model.getDataset();
-        for (int i = 0; i < ds.getSeriesCount(); i++) {
-            view.getSeriesTable().addRow(ds.getX(0,i).doubleValue(),ds.getY(0,i).doubleValue());
+        view.getTextPanel().deleteBtn.addActionListener(e -> onValueDelete());
+        view.populateWithSeries(model.getSeries());
+        view.drawChart(model.getDataset());
+    }
+
+    private void onValueDelete() {
+        int selectedRow = view.removeSelectedRow();
+        if (selectedRow != -1) {
+            model.deleteDataItem(selectedRow);
+            view.drawChart(model.getDataset());
         }
-        view.drawChart(ds);
     }
 
     private void onValueAdd(){
         View.TextPanel textPanel = view.getTextPanel();
         String xVal = textPanel.textField.getValue().toString();
+        textPanel.textField.setValue(0);
         double x = Double.parseDouble(xVal);
-        model.addSeries(x);
-        view.getSeriesTable().addRow(x, model.calculateY(x));
+        model.addDataItem(x);
+        view.addRow(x, model.calculateY(x));
         view.drawChart(model.getDataset());
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        ActionEvent actionEvent = event;
     }
 }

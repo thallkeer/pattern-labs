@@ -3,11 +3,9 @@ package main.lab4.mvc;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,14 +16,15 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 public class View extends JFrame {
+    private final int height = 800;
+    private final int width = 1200;
+
     private JPanel mainPanel;
     private SeriesTable seriesTable;
     private TextPanel textPanel;
     private JFreeChart chart;
-    ChartPanel cp;
-    int height = 800;
-    int width = 1200;
-    GridBagConstraints gbc;
+    private ChartPanel cp;
+    private GridBagConstraints gbc;
 
     public View() {
         this.setResizable(false);
@@ -37,7 +36,7 @@ public class View extends JFrame {
         GridBagLayout gbl = new GridBagLayout();
         mainPanel.setLayout(gbl);
 
-        chart = ChartFactory.createXYLineChart("f(x) = 2x",
+        chart = ChartFactory.createXYLineChart("f(x) = (3-x)^2 - 2",
                 "x", "y", null, PlotOrientation.VERTICAL, false, true,
                 true);
         cp = new ChartPanel(chart);
@@ -66,7 +65,7 @@ public class View extends JFrame {
         cp.repaint();
     }
 
-    public void AddPanel(JPanel panel, int gridx, int gridwidth, double weightx) {
+    private void AddPanel(JPanel panel, int gridx, int gridwidth, double weightx) {
         gbc.gridx = gridx;
         gbc.gridy = 0;
         gbc.gridwidth = gridwidth;
@@ -78,22 +77,34 @@ public class View extends JFrame {
         mainPanel.add(panel, gbc);
     }
 
-
-
-    public SeriesTable getSeriesTable() {
-        return seriesTable;
+    public void populateWithSeries(XYSeries series) {
+        for (int i = 0; i < series.getItemCount(); i++) {
+            seriesTable.addRow(
+                    series.getX(i).doubleValue(),
+                    series.getY(i).doubleValue()
+            );
+        }
     }
 
-    public TextPanel getTextPanel(){
+    public void addRow(double x, double y) {
+        seriesTable.addRow(x, y);
+    }
+
+    public int removeSelectedRow() {
+        return seriesTable.removeSelectedRow();
+    }
+
+    public TextPanel getTextPanel() {
         return textPanel;
     }
 
-    class TextPanel extends JPanel {
+    static class TextPanel extends JPanel {
         JFormattedTextField textField;
         JLabel textLabel;
         JButton addBtn;
+        JButton deleteBtn;
 
-        public TextPanel() {
+        TextPanel() {
             this.setLayout(new BorderLayout());
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setDecimalSeparator('.');
@@ -110,10 +121,12 @@ public class View extends JFrame {
             textField.setValue(0.0);
             textLabel = new JLabel("Input x value: ");
             addBtn = new JButton("Add");
+            deleteBtn = new JButton("Delete");
 
             add(textLabel, BorderLayout.WEST);
             add(textField, BorderLayout.CENTER);
             add(addBtn, BorderLayout.EAST);
+            add(deleteBtn, BorderLayout.PAGE_END);
         }
     }
 }

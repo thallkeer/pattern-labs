@@ -1,8 +1,5 @@
 package main.lab3.templateMethod;
 
-import javafx.application.Application;
-import javafx.scene.control.ComboBox;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;

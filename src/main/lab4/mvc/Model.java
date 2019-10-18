@@ -5,17 +5,18 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 public class Model {
-    XYBarDataset dataset;
+    private XYBarDataset dataset;
+    private final String SERIES_NAME = "graph_series";
 
-    Model(){
+    Model() {
         dataset = createDataset();
     }
 
     public XYBarDataset createDataset() {
-        XYSeries series = new XYSeries("series1");
+        XYSeries series = new XYSeries(SERIES_NAME);
 
-        double x = 0;
-        for (int i = 0; i < 10; i++) {
+        double x = -5;
+        for (int i = 0; i < 15; i++) {
             series.add(x, calculateY(x));
             x += 0.5;
         }
@@ -26,16 +27,24 @@ public class Model {
         return new XYBarDataset(dataset, 5);
     }
 
-    public XYBarDataset getDataset(){
+    public XYBarDataset getDataset() {
         return dataset;
     }
 
-    public void addSeries(double x) {
+    public void addDataItem(double x) {
+        getSeries().addOrUpdate(x, calculateY(x));
+    }
+
+    public void deleteDataItem(int index) {
+        getSeries().remove(index);
+    }
+
+    public XYSeries getSeries() {
         XYSeriesCollection collection = (XYSeriesCollection) dataset.getUnderlyingDataset();
-        collection.getSeries("series1").addOrUpdate(x, calculateY(x));
+        return collection.getSeries(SERIES_NAME);
     }
 
     public double calculateY(double x) {
-        return 2*x;
+        return Math.pow(3-x,2) - 2;
     }
 }

@@ -1,6 +1,5 @@
-package test.lab2.adapter;
+package lab2.adapter;
 
-import main.lab2.adapter.StringArrayToBytesAdapter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,7 +18,7 @@ public class AdapterTest {
         String[] strings = new String[]{"I", "am", "the", "best", "!"};
         try (OutputStream outputStream = new FileOutputStream(f, false)) {
             InputStream inputStream = new FileInputStream(FILE_PATH);
-            StringArrayToBytesAdapter adapter = new StringArrayToBytesAdapter(outputStream);
+            main.lab2.adapter.StringArrayToBytesAdapter adapter = new main.lab2.adapter.StringArrayToBytesAdapter(outputStream);
             adapter.adapt(strings);
             byte[] buffer;
             int available;
