@@ -1,18 +1,16 @@
 package main.lab4.mvc;
 
-import main.lab4.mvc.interfaces.IModel;
-import main.lab4.mvc.interfaces.IView;
-
 public class Controller {
-    private IModel model;
-    private IView view;
+    private Model model;
+    private View view;
 
-    public Controller(IModel model, IView view) {
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        initController();
     }
 
-    public void initController() {
+    private void initController() {
         view.getTextPanel().addBtn.addActionListener(e -> onValueAdd());
         view.getTextPanel().deleteBtn.addActionListener(e -> onValueDelete());
         view.populateWithSeries(model.getSeries());

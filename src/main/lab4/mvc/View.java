@@ -1,12 +1,10 @@
 package main.lab4.mvc;
 
-import main.lab4.mvc.interfaces.IView;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYBarDataset;
-import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 
 import javax.swing.*;
@@ -17,7 +15,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
-public class View extends JFrame implements IView {
+public class View extends JFrame {
     private final int height = 800;
     private final int width = 1200;
 
@@ -38,14 +36,8 @@ public class View extends JFrame implements IView {
         GridBagLayout gbl = new GridBagLayout();
         mainPanel.setLayout(gbl);
 
-        chart = ChartFactory.createXYLineChart(
-                "f(x) = (3-x)^2 - 2",
-                "x",
-                "y",
-                null,
-                PlotOrientation.VERTICAL,
-                false,
-                true,
+        chart = ChartFactory.createXYLineChart("f(x) = (3-x)^2 - 2",
+                "x", "y", null, PlotOrientation.VERTICAL, false, true,
                 true);
         cp = new ChartPanel(chart);
 
@@ -87,8 +79,10 @@ public class View extends JFrame implements IView {
 
     public void populateWithSeries(XYSeries series) {
         for (int i = 0; i < series.getItemCount(); i++) {
-            XYDataItem item = series.getDataItem(i);
-            seriesTable.addRow(item.getXValue(), item.getYValue());
+            seriesTable.addRow(
+                    series.getX(i).doubleValue(),
+                    series.getY(i).doubleValue()
+            );
         }
     }
 
@@ -104,7 +98,7 @@ public class View extends JFrame implements IView {
         return textPanel;
     }
 
-    public static class TextPanel extends JPanel {
+    static class TextPanel extends JPanel {
         JFormattedTextField textField;
         JLabel textLabel;
         JButton addBtn;
