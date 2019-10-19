@@ -31,7 +31,7 @@ public class Car implements IVehicle, Cloneable, Serializable {
 
     @Override
     public String toString() {
-        return brand + "\t" + Vehicles.getAveragePrice(this);
+        return String.format("Brand: %s \nModels count: %s \nModels:\n%s",brand, getModelsSize(), Arrays.toString(models));
     }
 
     @Override
@@ -170,6 +170,8 @@ public class Car implements IVehicle, Cloneable, Serializable {
         if (this.printCommand != null)
             this.printCommand.print(this, fileWriter);
     }
+
+
 
     public static class Model implements Cloneable, Serializable {
         private String name;

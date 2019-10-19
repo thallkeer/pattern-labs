@@ -1,10 +1,11 @@
 package main.lab4.mvc;
 
+import main.lab4.mvc.interfaces.IModel;
 import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class Model {
+public class Model implements IModel {
     private XYBarDataset dataset;
     private final String SERIES_NAME = "graph_series";
 
@@ -12,7 +13,7 @@ public class Model {
         dataset = createDataset();
     }
 
-    public XYBarDataset createDataset() {
+    private XYBarDataset createDataset() {
         XYSeries series = new XYSeries(SERIES_NAME);
 
         double x = -5;
