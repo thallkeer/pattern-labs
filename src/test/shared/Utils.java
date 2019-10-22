@@ -10,7 +10,7 @@ public class Utils {
         IVehicle vehicle = Vehicles.createInstance("Some vehicle" + number, 0);
         try {
             for (int i = 0; i < modelSize; i++) {
-                vehicle.addModel("Model №" + i, getRandomDouble());
+                vehicle.addModel("Model№" + i, getRandomDouble());
             }
             number++;
         } catch (DuplicateModelNameException ex) {

@@ -39,6 +39,15 @@ public class Vehicles {
         return averagePriceByVehicle;
     }
 
+    public static void printVehicle(IVehicle vehicle){
+        System.out.println(vehicle);
+        try {
+            printPriceList(vehicle);
+        } catch (NoSuchModelNameException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void printPriceList(IVehicle vehicle) throws NoSuchModelNameException {
         for (String modelName : vehicle.getAllModelsNames())
             System.out.println("model: " + modelName + " price: " + vehicle.getModelPrice(modelName));

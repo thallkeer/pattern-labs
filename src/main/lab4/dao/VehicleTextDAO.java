@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class VehicleTextDAO implements IDAO<IVehicle> {
     private String path;
+    private final String delimiter = "---";
 
     public VehicleTextDAO(String path) {
         this.path = path;
@@ -25,7 +26,7 @@ public class VehicleTextDAO implements IDAO<IVehicle> {
             pw.println(entity.getModelsSize());
             String[] names = entity.getAllModelsNames();
             for (int i = 0; i < names.length; i++) {
-                pw.println(names[i] + " " + entity.getModelPrice(names[i]));
+                pw.println(names[i] + delimiter + entity.getModelPrice(names[i]));
             }
         } catch (IOException | NoSuchModelNameException e) {
             e.printStackTrace();
@@ -44,7 +45,7 @@ public class VehicleTextDAO implements IDAO<IVehicle> {
             IVehicle vehicle = (IVehicle) ctor.newInstance(new Object[] {brand, modelsSize});
             for (int i = 0; i < modelsSize; i++) {
                 String nextModel = scanner.nextLine();
-                String[] modelWithPrice = nextModel.split(" ");
+                String[] modelWithPrice = nextModel.split(delimiter);
                 vehicle.setModelName(Integer.toString(i), modelWithPrice[0]);
                 vehicle.setModelPrice(modelWithPrice[0], Double.parseDouble(modelWithPrice[1]));
             }
