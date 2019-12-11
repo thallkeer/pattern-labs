@@ -1,6 +1,7 @@
 package main.lab4.mvc;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 
@@ -17,6 +18,14 @@ public class SeriesTable extends JTable {
 
         setModel(tableModel);
         setFillsViewportHeight(true);
+    }
+
+    public DefaultTableModel getTableModel(){
+        return tableModel;
+    }
+
+    public void updateRow(int index, double newValue) {
+        tableModel.setValueAt(newValue, index, 1);
     }
 
     public void addRow(double x, double y) {

@@ -5,7 +5,7 @@ import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class Model implements IModel {
+public class Model {
     private XYBarDataset dataset;
     private final String SERIES_NAME = "graph_series";
 
@@ -38,6 +38,10 @@ public class Model implements IModel {
 
     public void deleteDataItem(int index) {
         getSeries().remove(index);
+    }
+
+    public void updateDataItem(int index, double newValue){
+        getSeries().updateByIndex(index,newValue);
     }
 
     public XYSeries getSeries() {

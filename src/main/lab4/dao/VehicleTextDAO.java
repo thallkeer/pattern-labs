@@ -19,7 +19,7 @@ public class VehicleTextDAO implements IDAO<IVehicle> {
 
     @Override
     public void write(IVehicle entity) {
-        try (FileWriter fw = new FileWriter(path)){
+        try (FileWriter fw = new FileWriter(path)) {
             PrintWriter pw = new PrintWriter(fw);
             pw.println(entity.getClass().getName());
             pw.println(entity.getBrand());
@@ -35,14 +35,14 @@ public class VehicleTextDAO implements IDAO<IVehicle> {
 
     @Override
     public IVehicle read() {
-        try (FileReader fr = new FileReader(path)){
+        try (FileReader fr = new FileReader(path)) {
             Scanner scanner = new Scanner(fr);
             String className = scanner.nextLine();
             String brand = scanner.nextLine();
             int modelsSize = Integer.parseInt(scanner.nextLine());
             Class _class = Class.forName(className);
-            Constructor ctor = _class.getConstructor(String.class,int.class);
-            IVehicle vehicle = (IVehicle) ctor.newInstance(new Object[] {brand, modelsSize});
+            Constructor ctor = _class.getConstructor(String.class, int.class);
+            IVehicle vehicle = (IVehicle) ctor.newInstance(new Object[]{brand, modelsSize});
             for (int i = 0; i < modelsSize; i++) {
                 String nextModel = scanner.nextLine();
                 String[] modelWithPrice = nextModel.split(delimiter);

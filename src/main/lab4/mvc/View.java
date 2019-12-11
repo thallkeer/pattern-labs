@@ -11,6 +11,7 @@ import org.jfree.data.xy.XYSeries;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -68,6 +69,10 @@ public class View extends JFrame implements IView {
         this.setVisible(true);
     }
 
+    public DefaultTableModel getTableModel(){
+        return seriesTable.getTableModel();
+    }
+
     public void drawChart(XYBarDataset ds) {
         chart.getXYPlot().setDataset(ds);
         cp.repaint();
@@ -90,6 +95,10 @@ public class View extends JFrame implements IView {
             XYDataItem item = series.getDataItem(i);
             seriesTable.addRow(item.getXValue(), item.getYValue());
         }
+    }
+
+    public void updateY(int index, double y){
+        seriesTable.updateRow(index,y);
     }
 
     public void addRow(double x, double y) {

@@ -1,13 +1,13 @@
 package main.lab4.mvc;
 
-import main.lab4.mvc.interfaces.IModel;
-import main.lab4.mvc.interfaces.IView;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
 
 public class Controller {
-    private IModel model;
-    private IView view;
+    private Model model;
+    private View view;
 
-    public Controller(IModel model, IView view) {
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
     }
@@ -15,8 +15,21 @@ public class Controller {
     public void initController() {
         view.getTextPanel().addBtn.addActionListener(e -> onValueAdd());
         view.getTextPanel().deleteBtn.addActionListener(e -> onValueDelete());
+        DefaultTableModel tableModel = view.getTableModel();
+        tableModel.addTableModelListener(e -> onValueUpdate(e, tableModel));
         view.populateWithSeries(model.getSeries());
         view.drawChart(model.getDataset());
+
+    }
+
+    private void onValueUpdate(TableModelEvent e, DefaultTableModel tableModel) {
+        if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 0) {
+            int index = e.getFirstRow();
+            double val = Double.parseDouble(tableModel.getValueAt(index, 0).toString());
+            model.updateDataItem(index, val);
+            view.updateY(index, model.calculateY(val));
+            view.drawChart(model.getDataset());
+        }
     }
 
     private void onValueDelete() {
@@ -27,7 +40,7 @@ public class Controller {
         }
     }
 
-    private void onValueAdd(){
+    private void onValueAdd() {
         View.TextPanel textPanel = view.getTextPanel();
         String xVal = textPanel.textField.getValue().toString();
         textPanel.textField.setValue(0);
